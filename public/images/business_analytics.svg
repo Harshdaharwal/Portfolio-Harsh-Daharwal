@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 380" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9a3412"/>
+      <stop offset="1" stop-color="#fb923c"/>
+    </linearGradient>
+    <linearGradient id="card2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#fff7ed"/>
+    </linearGradient>
+  </defs>
+  <rect width="660" height="380" fill="url(#bg2)"/>
+  <!-- glow -->
+  <circle cx="540" cy="60" r="120" fill="#fbbf24" opacity="0.18"/>
+  <circle cx="100" cy="320" r="80" fill="#f59e0b" opacity="0.2"/>
+  <text x="40" y="50" font-family="'Space Grotesk',sans-serif" font-size="13" letter-spacing="3" fill="#ffedd5" font-weight="700">BUSINESS ANALYTICS · KPI</text>
+  <text x="40" y="85" font-family="'Space Grotesk',sans-serif" font-size="26" fill="#ffffff" font-weight="800">Executive KPI Reporting</text>
+  <!-- KPI tiles -->
+  <g transform="translate(40,110)">
+    <g>
+      <rect width="180" height="100" rx="12" fill="url(#card2)" stroke="#ea580c" stroke-opacity="0.2"/>
+      <text x="16" y="32" font-family="'Fira Code',monospace" font-size="10" letter-spacing="2" fill="#9a3412" font-weight="700">REVENUE</text>
+      <text x="16" y="68" font-family="'Space Grotesk',sans-serif" font-size="28" fill="#0f172a" font-weight="800">₹4.2M</text>
+      <text x="16" y="88" font-family="'Fira Code',monospace" font-size="11" fill="#16a34a" font-weight="700">▲ 18% YoY</text>
+    </g>
+    <g transform="translate(200,0)">
+      <rect width="180" height="100" rx="12" fill="url(#card2)" stroke="#ea580c" stroke-opacity="0.2"/>
+      <text x="16" y="32" font-family="'Fira Code',monospace" font-size="10" letter-spacing="2" fill="#9a3412" font-weight="700">LTV / CAC</text>
+      <text x="16" y="68" font-family="'Space Grotesk',sans-serif" font-size="28" fill="#0f172a" font-weight="800">3.4x</text>
+      <text x="16" y="88" font-family="'Fira Code',monospace" font-size="11" fill="#16a34a" font-weight="700">▲ healthy</text>
+    </g>
+    <g transform="translate(400,0)">
+      <rect width="180" height="100" rx="12" fill="url(#card2)" stroke="#ea580c" stroke-opacity="0.2"/>
+      <text x="16" y="32" font-family="'Fira Code',monospace" font-size="10" letter-spacing="2" fill="#9a3412" font-weight="700">CHURN</text>
+      <text x="16" y="68" font-family="'Space Grotesk',sans-serif" font-size="28" fill="#0f172a" font-weight="800">2.1%</text>
+      <text x="16" y="88" font-family="'Fira Code',monospace" font-size="11" fill="#dc2626" font-weight="700">▼ -0.4 pp</text>
+    </g>
+  </g>
+  <!-- chart card -->
+  <g transform="translate(40,230)">
+    <rect width="580" height="120" rx="12" fill="url(#card2)" stroke="#ea580c" stroke-opacity="0.2"/>
+    <text x="16" y="26" font-family="'Fira Code',monospace" font-size="10" letter-spacing="2" fill="#9a3412" font-weight="700">FUNNEL · COHORT</text>
+    <!-- bars -->
+    <g transform="translate(16,40)">
+      <rect width="68" height="64" rx="4" fill="#fb923c"/>
+      <rect x="74" width="68" height="54" y="10" rx="4" fill="#f97316"/>
+      <rect x="148" width="68" height="44" y="20" rx="4" fill="#ea580c"/>
+      <rect x="222" width="68" height="34" y="30" rx="4" fill="#c2410c"/>
+      <rect x="296" width="68" height="22" y="42" rx="4" fill="#9a3412"/>
+    </g>
+    <!-- line -->
+    <polyline points="380,90 410,76 440,80 470,60 500,68 530,46 560,52" stroke="#dc2626" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <g fill="#dc2626">
+      <circle cx="380" cy="90" r="3"/><circle cx="410" cy="76" r="3"/><circle cx="440" cy="80" r="3"/><circle cx="470" cy="60" r="3"/><circle cx="500" cy="68" r="3"/><circle cx="530" cy="46" r="3"/><circle cx="560" cy="52" r="3"/>
+    </g>
+  </g>
+</svg>
