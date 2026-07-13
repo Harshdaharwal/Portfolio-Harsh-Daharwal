@@ -193,15 +193,15 @@ function ProjectModal({ p, onClose }: { p: Project; onClose: () => void }) {
       }}>
         <div style={{ width: "100%", maxWidth: 850, background: "white", minHeight: "100vh", display: "flex", flexDirection: "column", boxShadow: "0 0 50px rgba(14,165,233,0.1)" }}>
           {/* Header */}
-          <div style={{ position: "sticky", top: 0, zIndex: 10, background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderBottom: `3px solid ${p.color}`, padding: "1.5rem 2rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-              <span style={{ width: 36, height: 36, borderRadius: 10, background: `${p.color}15`, border: `1px solid ${p.color}25`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem" }}>{p.icon}</span>
-              <div>
+          <div style={{ position: "sticky", top: 0, zIndex: 10, background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderBottom: `3px solid ${p.color}`, padding: "1.1rem clamp(1rem, 4vw, 2rem)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.75rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", minWidth: 0 }}>
+              <span style={{ width: 36, height: 36, borderRadius: 10, background: `${p.color}15`, border: `1px solid ${p.color}25`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", flexShrink: 0 }}>{p.icon}</span>
+              <div style={{ minWidth: 0 }}>
                 <div style={{ fontSize: "0.6rem", color: p.color, fontFamily: "'Fira Code',monospace", textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700 }}>{p.category}</div>
-                <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "1.1rem", color: "#0a1628" }}>{p.title}</div>
+                <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(0.95rem, 2.5vw, 1.1rem)", color: "#0a1628", lineHeight: 1.25 }}>{p.title}</div>
               </div>
             </div>
-            <button onClick={onClose} style={{ width: 38, height: 38, borderRadius: 10, background: "#f1f5f9", border: "1px solid #e2e8f0", cursor: "pointer", fontSize: "1rem", display: "flex", alignItems: "center", justifyContent: "center", color: "#64748b", transition: "all 0.2s" }}
+            <button onClick={onClose} style={{ width: 38, height: 38, borderRadius: 10, background: "#f1f5f9", border: "1px solid #e2e8f0", cursor: "pointer", fontSize: "1rem", display: "flex", alignItems: "center", justifyContent: "center", color: "#64748b", transition: "all 0.2s", flexShrink: 0 }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#fee2e2"; (e.currentTarget as HTMLElement).style.color = "#ef4444"; (e.currentTarget as HTMLElement).style.transform = "scale(1.05)"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "#f1f5f9"; (e.currentTarget as HTMLElement).style.color = "#64748b"; (e.currentTarget as HTMLElement).style.transform = "scale(1)"; }}>
               ✕
@@ -218,7 +218,7 @@ function ProjectModal({ p, onClose }: { p: Project; onClose: () => void }) {
           )}
 
           {/* Body */}
-          <div style={{ padding: "2rem", display: "flex", flexDirection: "column", gap: "1.2rem", flex: 1 }}>
+          <div style={{ padding: "clamp(1rem, 4vw, 2rem)", display: "flex", flexDirection: "column", gap: "1.2rem", flex: 1 }}>
           {/* Metrics */}
           <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
             {p.impact.map((imp, i) => (
@@ -240,7 +240,7 @@ function ProjectModal({ p, onClose }: { p: Project; onClose: () => void }) {
           </div>
 
           {/* Problem & Solution */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.55rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: "0.55rem" }}>
             <div style={{ padding: "0.7rem", borderRadius: 10, background: "#fff7ed", border: "1px solid #fed7aa" }}>
               <div style={{ fontSize: "0.58rem", fontWeight: 700, color: "#d97706", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.3rem" }}>🔴 Problem</div>
               <p style={{ fontSize: "0.72rem", color: "#64748b", lineHeight: 1.55, margin: 0 }}>{p.problem}</p>
@@ -254,7 +254,7 @@ function ProjectModal({ p, onClose }: { p: Project; onClose: () => void }) {
           {/* Features */}
           <div>
             <SHead color={p.color} label="Key Features" />
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.45rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "0.45rem" }}>
               {p.features.map((f, i) => (
                 <div key={i} style={{ display: "flex", gap: "0.45rem", padding: "0.6rem 0.65rem", borderRadius: 9, background: `${p.color}05`, border: `1px solid ${p.color}10` }}>
                   <span style={{ fontSize: "0.85rem", flexShrink: 0 }}>{f.icon}</span>
@@ -384,7 +384,7 @@ export default function BehancePortfolio() {
   return (
     <div style={{ minHeight: "100vh" }}>
       {/* ── Top bar inside main ── */}
-      <div style={{
+      <div className="bp-tabbar" style={{
         position: "sticky", top: 0, zIndex: 50,
         background: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)",
         borderBottom: "1px solid rgba(14,165,233,0.15)",
@@ -406,9 +406,9 @@ export default function BehancePortfolio() {
           </button>
         ))}
         {/* Spacer + stats */}
-        <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "1.5rem" }}>
-          <span style={{ fontSize: "0.7rem", color: "#94a3b8", fontFamily: "'Fira Code',monospace" }}>
-            {activeTab === "Workflow" ? "8-stage pipeline" : `${filtered.length} projects`}
+        <div className="bp-tab-count" style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "1.5rem" }}>
+          <span style={{ fontSize: "0.7rem", color: "#94a3b8", fontFamily: "'Fira Code',monospace", whiteSpace: "nowrap" }}>
+            {activeTab === "Workflow" ? "10-stage pipeline" : `${filtered.length} projects`}
           </span>
         </div>
       </div>
@@ -417,7 +417,7 @@ export default function BehancePortfolio() {
         <WorkflowFlow />
       ) : (
         /* ── Masonry Project Grid ── */
-        <div id="projects" style={{ padding: "1.75rem 2rem 3rem", scrollMarginTop: 70 }}>
+        <div id="projects" style={{ padding: "clamp(1rem, 3vw, 1.75rem) clamp(1rem, 3.5vw, 2rem) 3rem", scrollMarginTop: 70 }}>
           <div style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(285px, 1fr))",
@@ -480,7 +480,7 @@ function ContactSection() {
 
   return (
     <section id="contact" style={{
-      padding: "4rem 2rem 5rem",
+      padding: "clamp(2.5rem, 6vw, 4rem) clamp(1rem, 4vw, 2rem) clamp(3rem, 7vw, 5rem)",
       background: "linear-gradient(180deg, rgba(255,255,255,0.0) 0%, rgba(240,249,255,0.85) 30%, rgba(224,242,254,0.92) 100%)",
       scrollMarginTop: 70,
     }}>
@@ -488,19 +488,19 @@ function ContactSection() {
         <div style={{ fontFamily: "'Fira Code',monospace", fontSize: "0.72rem", color: "#0ea5e9", letterSpacing: "0.15em", fontWeight: 700, marginBottom: "0.5rem" }}>
           / GET IN TOUCH
         </div>
-        <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, fontSize: "2.1rem", color: "#0a1628", margin: "0 0 0.6rem 0" }}>
+        <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, fontSize: "clamp(1.6rem, 4.5vw, 2.1rem)", color: "#0a1628", margin: "0 0 0.6rem 0" }}>
           Let&apos;s build something <span style={{ background: "linear-gradient(135deg,#0ea5e9,#0369a1)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>useful</span>.
         </h2>
         <p style={{ color: "#475569", fontSize: "0.95rem", margin: "0 0 2rem 0", lineHeight: 1.6 }}>
-          Hiring, freelance work, or want to chat about data &amp; automation? Drop a message and I&apos;ll reply within 24 hours.
+          Whether you&apos;re hiring, planning a freelance project, or just curious about data &amp; automation — send a message and I&apos;ll reply within 24 hours.
         </p>
       </div>
 
-      <div style={{ maxWidth: 760, margin: "0 auto", background: "white", borderRadius: 18, boxShadow: "0 20px 60px rgba(14,165,233,0.15), 0 0 0 1px rgba(14,165,233,0.1)", padding: "2rem" }}>
+      <div style={{ maxWidth: 760, margin: "0 auto", background: "white", borderRadius: 18, boxShadow: "0 20px 60px rgba(14,165,233,0.15), 0 0 0 1px rgba(14,165,233,0.1)", padding: "clamp(1.25rem, 4vw, 2rem)" }}>
         {sent ? (
           <div style={{ textAlign: "center", padding: "2rem 0" }}>
             <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>✅</div>
-            <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", color: "#0a1628", margin: "0 0 0.5rem 0" }}>Your mail client is opening…</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", color: "#0a1628", margin: "0 0 0.5rem 0" }}>Opening your email app…</h3>
             <p style={{ color: "#64748b", fontSize: "0.9rem", margin: 0 }}>If it didn&apos;t, email me directly at <a href="mailto:harshdaharwal20@gmail.com" style={{ color: "#0ea5e9", fontWeight: 600 }}>harshdaharwal20@gmail.com</a>.</p>
             <button onClick={() => { setSent(false); setForm({ name: "", email: "", phone: "", subject: "Project Inquiry", message: "" }); }}
               style={{ marginTop: "1.25rem", padding: "0.5rem 1.1rem", borderRadius: 8, background: "#f1f5f9", border: "1px solid #cbd5e1", cursor: "pointer", fontWeight: 600, color: "#334155" }}>
@@ -509,17 +509,17 @@ function ContactSection() {
           </div>
         ) : (
           <form onSubmit={submit} style={{ display: "grid", gap: "1rem" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1rem" }}>
               <div>
                 <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#334155", marginBottom: "0.35rem" }}>Your Name *</label>
-                <input required value={form.name} onChange={update("name")} onFocus={focusIn} onBlur={focusOut} style={inputStyle} placeholder="Jane Doe" />
+                <input required value={form.name} onChange={update("name")} onFocus={focusIn} onBlur={focusOut} style={inputStyle} placeholder="Your full name" />
               </div>
               <div>
                 <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#334155", marginBottom: "0.35rem" }}>Email *</label>
                 <input required type="email" value={form.email} onChange={update("email")} onFocus={focusIn} onBlur={focusOut} style={inputStyle} placeholder="you@company.com" />
               </div>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1rem" }}>
               <div>
                 <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#334155", marginBottom: "0.35rem" }}>Phone (optional)</label>
                 <input value={form.phone} onChange={update("phone")} onFocus={focusIn} onBlur={focusOut} style={inputStyle} placeholder="+91 ..." />
@@ -652,7 +652,7 @@ function WorkflowFlow() {
   return (
     <section style={{
       position: "relative",
-      padding: "4rem 2rem 5rem",
+      padding: "clamp(2.5rem, 6vw, 4rem) clamp(1rem, 4vw, 2rem) clamp(3rem, 7vw, 5rem)",
       background: "linear-gradient(135deg, #fef3c7 0%, #fce7f3 20%, #ddd6fe 45%, #bfdbfe 70%, #a7f3d0 100%)",
       overflow: "hidden",
     }}>
@@ -849,8 +849,8 @@ function WorkflowFlow() {
             <h3 style={{
               margin: 0,
               fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800,
-              fontSize: "clamp(1.3rem,2.6vw,1.9rem)", color: "#0a1628", letterSpacing: "0.04em",
-              textTransform: "uppercase", whiteSpace: "nowrap",
+              fontSize: "clamp(1.15rem,2.6vw,1.9rem)", color: "#0a1628", letterSpacing: "0.04em",
+              textTransform: "uppercase", textAlign: "center",
             }}>
               Our Business <span style={{ background: "linear-gradient(135deg,#8b5cf6,#ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Automation Model</span>
             </h3>
@@ -908,18 +908,18 @@ function WorkflowFlow() {
       {/* Closing CTA */}
       <div style={{ maxWidth: 720, margin: "4rem auto 0", textAlign: "center", position: "relative", zIndex: 2 }}>
         <div style={{
-          padding: "2.25rem 2.5rem",
+          padding: "clamp(1.5rem, 4.5vw, 2.25rem) clamp(1.25rem, 5vw, 2.5rem)",
           borderRadius: 22,
           background: "linear-gradient(135deg, #ffffff 0%, #fef3c7 100%)",
           border: "1px solid rgba(236,72,153,0.3)",
           boxShadow: "0 30px 80px rgba(139,92,246,0.2), 0 0 0 1px rgba(255,255,255,0.6) inset",
         }}>
-          <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, color: "#0a1628", fontSize: "1.6rem", margin: "0 0 0.6rem 0", letterSpacing: "-0.5px" }}>
+          <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, color: "#0a1628", fontSize: "clamp(1.3rem, 3.5vw, 1.6rem)", margin: "0 0 0.6rem 0", letterSpacing: "-0.5px" }}>
             This is the system. Want it for{" "}
             <span style={{ background: "linear-gradient(135deg,#ec4899,#8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>your business</span>?
           </h3>
           <p style={{ color: "#475569", fontSize: "0.95rem", margin: "0 0 1.5rem 0", lineHeight: 1.6 }}>
-            Most clients live in 2–6 weeks. Discovery call free · scoped quote in 48 hours.
+            Most projects go live in 2–6 weeks. Free discovery call · scoped quote within 48 hours.
           </p>
           <a href="#contact" onClick={e => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
             style={{

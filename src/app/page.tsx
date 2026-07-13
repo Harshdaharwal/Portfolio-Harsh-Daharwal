@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import LeftSidebar from "./components/LeftSidebar";
 import BehancePortfolio from "./components/BehancePortfolio";
@@ -7,14 +8,26 @@ import WelcomePopup from "./components/WelcomePopup";
 const ThreeBackground = dynamic(() => import("./components/ThreeBackground"), { ssr: false });
 
 export default function Home() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "#c8dff0", backgroundImage: "url('/images/tools_bg.png')", backgroundAttachment: "fixed", backgroundSize: "cover" }}>
+    <div className="lp-root">
       <WelcomePopup />
       <ThreeBackground />
-      {/* ── Fixed Left Sidebar ── */}
-      <LeftSidebar />
+
+      {/* ── Mobile hamburger (hidden on desktop) ── */}
+      <button className="lp-hamburger" aria-label="Open profile menu" onClick={() => setSidebarOpen(true)}>
+        ☰
+      </button>
+
+      {/* ── Mobile backdrop behind the drawer ── */}
+      <div className={`lp-backdrop${sidebarOpen ? " show" : ""}`} onClick={() => setSidebarOpen(false)} />
+
+      {/* ── Fixed Left Sidebar (drawer on mobile) ── */}
+      <LeftSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
       {/* ── Main scrollable content ── */}
-      <main style={{ marginLeft: 260, flex: 1, minHeight: "100vh", position: "relative", zIndex: 2 }}>
+      <main className="lp-main">
         <BehancePortfolio />
       </main>
     </div>

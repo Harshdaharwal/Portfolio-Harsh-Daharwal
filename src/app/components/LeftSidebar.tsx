@@ -23,7 +23,7 @@ const experience = [
   { title: "Data Analyst", company: "Digital Solutions", period: "2024 – 2025", type: "Project" },
 ];
 
-export default function LeftSidebar() {
+export default function LeftSidebar({ open = false, onClose }: { open?: boolean; onClose?: () => void }) {
   const [activeModal, setActiveModal] = useState<"experience" | "education" | "skills" | null>(null);
   const [mounted, setMounted] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -49,7 +49,7 @@ export default function LeftSidebar() {
   };
 
   return (
-    <aside style={{
+    <aside className={`lp-sidebar${open ? " open" : ""}`} style={{
       width: 260, minWidth: 260,
       position: "fixed", top: 0, left: 0, bottom: 0,
       background: "linear-gradient(180deg, #1e293b 0%, #0f172a 100%)",
@@ -63,6 +63,9 @@ export default function LeftSidebar() {
       padding: "1.5rem 1.25rem",
       gap: "0",
     }}>
+      {/* ── Mobile close button (hidden on desktop) ── */}
+      <button className="lp-sidebar-close" aria-label="Close menu" onClick={onClose}>✕</button>
+
       {/* ── Avatar & Name ── */}
       <div style={{ textAlign: "center", paddingBottom: "1.25rem", borderBottom: "1px solid rgba(148,163,184,0.18)" }}>
         {/* HD Avatar */}
@@ -128,7 +131,7 @@ export default function LeftSidebar() {
 
         {/* CTA Buttons */}
         <div style={{ display: "flex", gap: "0.5rem" }}>
-          <a href="#contact" onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
+          <a href="#contact" onClick={(e) => { e.preventDefault(); onClose?.(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
             style={{
               flex: 1, textAlign: "center", padding: "0.45rem 0",
               background: "linear-gradient(135deg,#0ea5e9,#0369a1)",
@@ -153,7 +156,7 @@ export default function LeftSidebar() {
       {/* ── Stats (highlighted, no boxes) ── */}
       <div style={{ padding: "1rem 0", borderBottom: "1px solid rgba(148,163,184,0.18)" }}>
         {([
-          { label: "Projects Delivered", value: "30+", action: () => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }) },
+          { label: "Projects Delivered", value: "30+", action: () => { onClose?.(); document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }); } },
           { label: "Years Experience", value: "2+", action: () => setActiveModal("experience") },
           { label: "Tools Mastered", value: "15+", action: () => setActiveModal("skills") },
         ] as const).map(s => (
@@ -190,8 +193,8 @@ export default function LeftSidebar() {
       <div style={{ padding: "1rem 0", borderBottom: "1px solid rgba(148,163,184,0.18)" }}>
         <SectionLabel label="About Me" />
         <p style={{ fontSize: "0.68rem", color: "#cbd5e1", lineHeight: 1.65, margin: 0 }}>
-          I turn raw data into decisions and automate businesses with intelligence.
-          2+ years of hands-on project delivery across automation, analytics, and machine learning.
+          I turn raw data into clear decisions and repetitive work into intelligent automation —
+          2+ years of hands-on delivery across analytics, automation, and machine learning.
         </p>
       </div>
 
@@ -228,8 +231,8 @@ export default function LeftSidebar() {
         <SectionLabel label="Education" action="Details" />
         <div style={{ marginBottom: "0.75rem" }}>
           <div style={{ fontSize: "0.73rem", fontWeight: 700, color: "#f1f5f9" }}>MBA in Data Analytics &amp; Visualization</div>
-          <div style={{ fontSize: "0.65rem", color: "#38bdf8", fontWeight: 600 }}>Bhopal University</div>
-          <div style={{ fontSize: "0.62rem", color: "#94a3b8" }}>Graduated</div>
+          <div style={{ fontSize: "0.65rem", color: "#38bdf8", fontWeight: 600 }}>LNCT University, Bhopal</div>
+          <div style={{ fontSize: "0.62rem", color: "#94a3b8" }}>2023 – 2025 · Graduated</div>
         </div>
       </div>
 
@@ -261,7 +264,7 @@ export default function LeftSidebar() {
         }}>
           <div onClick={(e) => e.stopPropagation()} style={{ width: "100%", maxWidth: 760, margin: "2rem auto 0", background: "rgba(255,255,255,0.98)", backdropFilter: "blur(20px)", borderRadius: 16, display: "flex", flexDirection: "column", boxShadow: "0 20px 60px rgba(14,165,233,0.25), 0 0 0 1px rgba(14,165,233,0.1)", animation: "slideDown 0.3s ease" }}>
             {/* Header */}
-            <div style={{ position: "sticky", top: 0, zIndex: 10, background: "rgba(255,255,255,0.85)", backdropFilter: "blur(12px)", borderBottom: `3px solid #0ea5e9`, padding: "1.5rem 2rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ position: "sticky", top: 0, zIndex: 10, background: "rgba(255,255,255,0.85)", backdropFilter: "blur(12px)", borderBottom: `3px solid #0ea5e9`, padding: "1.1rem clamp(1rem, 4vw, 2rem)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.75rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
                 <span style={{ width: 36, height: 36, borderRadius: 10, background: `#f0f9ff`, border: `1px solid #bae6fd`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem" }}>
                   {activeModal === "experience" ? "💼" : activeModal === "education" ? "🎓" : "🛠️"}
@@ -281,12 +284,12 @@ export default function LeftSidebar() {
             </div>
 
             {/* Modal Body */}
-            <div style={{ padding: "2rem", display: "flex", flexDirection: "column", gap: "1.5rem", flex: 1 }}>
+            <div style={{ padding: "clamp(1rem, 4vw, 2rem)", display: "flex", flexDirection: "column", gap: "1.25rem", flex: 1 }}>
               
               {activeModal === "experience" && (
                 <>
-                  <div style={{ padding: "1.5rem", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem" }}>
+                  <div style={{ padding: "clamp(1rem, 3.5vw, 1.5rem)", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
                       <div>
                         <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>Business Automation Analyst</h3>
                         <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.9rem" }}>e-marketing.io</div>
@@ -301,8 +304,8 @@ export default function LeftSidebar() {
                     </ul>
                   </div>
 
-                  <div style={{ padding: "1.5rem", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem" }}>
+                  <div style={{ padding: "clamp(1rem, 3.5vw, 1.5rem)", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
                       <div>
                         <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>Product Analytics Intern</h3>
                         <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.9rem" }}>Nanostack.io · Internship</div>
@@ -317,8 +320,8 @@ export default function LeftSidebar() {
                     </ul>
                   </div>
 
-                  <div style={{ padding: "1.5rem", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem" }}>
+                  <div style={{ padding: "clamp(1rem, 3.5vw, 1.5rem)", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
                       <div>
                         <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>Data Analyst</h3>
                         <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.85rem" }}>Digital Solutions</div>
@@ -337,11 +340,11 @@ export default function LeftSidebar() {
 
               {activeModal === "education" && (
                 <>
-                  <div style={{ padding: "1.5rem", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem" }}>
+                  <div style={{ padding: "clamp(1rem, 3.5vw, 1.5rem)", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
                       <div>
                         <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>MBA in Data Analytics &amp; Visualization</h3>
-                        <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.9rem" }}>LNCT UNIVERSITY BHOPAL</div>
+                        <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.9rem" }}>LNCT University, Bhopal</div>
                       </div>
                       <div style={{ background: "#dcfce7", color: "#166534", padding: "0.3rem 0.8rem", borderRadius: 999, fontSize: "0.75rem", fontWeight: 600 }}>2023 - 2025</div>
                     </div>
@@ -350,31 +353,31 @@ export default function LeftSidebar() {
                     </p>
                   </div>
 
-                  <div style={{ padding: "1.5rem", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem" }}>
+                  <div style={{ padding: "clamp(1rem, 3.5vw, 1.5rem)", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
                       <div>
-                        <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>Data Analytics Course</h3>
-                        <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.9rem" }}>SAMATRIX.IO, BHOPAL</div>
+                        <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>Data Analytics Certification</h3>
+                        <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.9rem" }}>Samatrix.io, Bhopal</div>
                       </div>
                       <div style={{ background: "#dcfce7", color: "#166534", padding: "0.3rem 0.8rem", borderRadius: 999, fontSize: "0.75rem", fontWeight: 600 }}>2023 - 2025</div>
                     </div>
                   </div>
 
-                  <div style={{ padding: "1.5rem", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem" }}>
+                  <div style={{ padding: "clamp(1rem, 3.5vw, 1.5rem)", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
                       <div>
-                        <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>BSC in Computer Application</h3>
-                        <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.9rem" }}>RAJA SHANKARSHAH UNIVERSITY</div>
+                        <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>B.Sc. in Computer Applications</h3>
+                        <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.9rem" }}>Raja Shankar Shah University</div>
                       </div>
                       <div style={{ background: "#dcfce7", color: "#166534", padding: "0.3rem 0.8rem", borderRadius: 999, fontSize: "0.75rem", fontWeight: 600 }}>2020 - 2023</div>
                     </div>
                   </div>
 
-                  <div style={{ padding: "1.5rem", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem" }}>
+                  <div style={{ padding: "clamp(1rem, 3.5vw, 1.5rem)", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
                       <div>
-                        <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>DCA - Diploma in Computer Application</h3>
-                        <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.9rem" }}>MCU UNIVERSITY BHOPAL</div>
+                        <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>DCA — Diploma in Computer Applications</h3>
+                        <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.9rem" }}>Makhanlal Chaturvedi University (MCU), Bhopal</div>
                       </div>
                       <div style={{ background: "#dcfce7", color: "#166534", padding: "0.3rem 0.8rem", borderRadius: 999, fontSize: "0.75rem", fontWeight: 600 }}>2021 - 2022</div>
                     </div>

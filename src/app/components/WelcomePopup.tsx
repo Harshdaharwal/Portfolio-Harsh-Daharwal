@@ -58,7 +58,7 @@ export default function WelcomePopup() {
           marginTop: "0.65rem",
           letterSpacing: "0.04em",
         }}>
-          Business Automation Expert
+          Data Analytics &amp; Business Automation Expert
         </div>
         <div style={{
           fontFamily: "'Space Grotesk', sans-serif",
