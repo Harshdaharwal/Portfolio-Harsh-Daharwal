@@ -180,7 +180,7 @@ const projects = [
 
 type Project = typeof projects[0];
 
-const tabs = ["All Work", "Analytics", "Automation", "Machine Learning", "No-Code", "Workflow"];
+const tabs = ["Workflow", "All Work", "Analytics", "Automation", "Machine Learning", "No-Code"];
 
 /* ─── MODAL ─── */
 function ProjectModal({ p, onClose }: { p: Project; onClose: () => void }) {
@@ -359,13 +359,27 @@ function ProjectCard({ p, onClick }: { p: Project; onClick: () => void }) {
 
 /* ─── MAIN COMPONENT ─── */
 export default function BehancePortfolio() {
-  const [activeTab, setActiveTab] = useState("All Work");
+  const [activeTab, setActiveTab] = useState("Workflow");
   const [selected, setSelected] = useState<Project | null>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Section headings light up in blue as they scroll into view
+  useEffect(() => {
+    if (typeof window === "undefined" || !("IntersectionObserver" in window)) return;
+    const els = Array.from(document.querySelectorAll(".scroll-blue-h"));
+    if (!els.length) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) en.target.classList.add("lit");
+      });
+    }, { threshold: 0.55, rootMargin: "0px 0px -8% 0px" });
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [activeTab]);
 
   useEffect(() => {
     if (selected) document.body.style.overflow = "hidden";
@@ -418,6 +432,18 @@ export default function BehancePortfolio() {
       ) : (
         /* ── Masonry Project Grid ── */
         <div id="projects" style={{ padding: "clamp(1rem, 3vw, 1.75rem) clamp(1rem, 3.5vw, 2rem) 3rem", scrollMarginTop: 70 }}>
+          {/* Section heading */}
+          <div style={{ marginBottom: "1.5rem" }}>
+            <div style={{ fontFamily: "'Fira Code',monospace", fontSize: "0.7rem", color: "#0ea5e9", letterSpacing: "0.18em", fontWeight: 700, textTransform: "uppercase", marginBottom: "0.45rem" }}>
+              / SELECTED WORK
+            </div>
+            <h2 className="scroll-blue-h" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, fontSize: "clamp(1.5rem, 4vw, 2.3rem)", color: "#0a1628", letterSpacing: "-0.6px", margin: 0, lineHeight: 1.1 }}>
+              {activeTab === "All Work" ? "All Projects" : `${activeTab} Projects`}
+            </h2>
+            <p style={{ color: "#475569", fontSize: "0.9rem", margin: "0.55rem 0 0 0", lineHeight: 1.6, maxWidth: 560 }}>
+              Real business solutions I&apos;ve shipped — click any card to open the full case study with the problem, approach and measurable impact.
+            </p>
+          </div>
           <div style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(285px, 1fr))",
@@ -488,7 +514,7 @@ function ContactSection() {
         <div style={{ fontFamily: "'Fira Code',monospace", fontSize: "0.72rem", color: "#0ea5e9", letterSpacing: "0.15em", fontWeight: 700, marginBottom: "0.5rem" }}>
           / GET IN TOUCH
         </div>
-        <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, fontSize: "clamp(1.6rem, 4.5vw, 2.1rem)", color: "#0a1628", margin: "0 0 0.6rem 0" }}>
+        <h2 className="scroll-blue-h" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, fontSize: "clamp(1.6rem, 4.5vw, 2.1rem)", color: "#0a1628", margin: "0 0 0.6rem 0" }}>
           Let&apos;s build something <span style={{ background: "linear-gradient(135deg,#0ea5e9,#0369a1)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>useful</span>.
         </h2>
         <p style={{ color: "#475569", fontSize: "0.95rem", margin: "0 0 2rem 0", lineHeight: 1.6 }}>
@@ -671,7 +697,7 @@ function WorkflowFlow() {
           border: "1px solid rgba(124,58,237,0.25)",
           marginBottom: "1.25rem",
         }}>
-          ✦ The Harsh Automation Pipeline ✦
+          ✦ End-to-End Business Solutions Workflow ✦
         </div>
         <h2 style={{
           fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800,
@@ -688,10 +714,10 @@ function WorkflowFlow() {
           <br />into <span style={{
             background: "linear-gradient(135deg,#0ea5e9 0%,#10b981 100%)",
             WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-          }}>automated pipelines.</span>
+          }}>automated business solutions.</span>
         </h2>
         <p style={{ color: "#475569", fontSize: "1rem", lineHeight: 1.7, maxWidth: 660, margin: "1rem auto 0" }}>
-          A 10-stage delivery flow refined across 30+ shipped automations — from the first discovery call to the day your team forgets there ever was a manual process.
+          A proven 10-stage delivery workflow, refined across 30+ shipped business solutions — from the first discovery call to the day your team forgets a manual process ever existed.
         </p>
 
         {/* Top stats */}
@@ -789,7 +815,7 @@ function WorkflowFlow() {
           }}>
             ◆ Why Founders Choose This System ◆
           </div>
-          <h3 style={{
+          <h3 className="scroll-blue-h" style={{
             margin: "0.9rem 0 0 0",
             fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800,
             fontSize: "clamp(1.5rem,3vw,2.1rem)", color: "#0a1628", letterSpacing: "-0.5px",
@@ -846,13 +872,13 @@ function WorkflowFlow() {
         <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
             <span style={{ flex: 1, maxWidth: 120, height: 2, background: "linear-gradient(90deg, transparent, #8b5cf6)" }} />
-            <h3 style={{
+            <h3 className="scroll-blue-h" style={{
               margin: 0,
               fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800,
               fontSize: "clamp(1.15rem,2.6vw,1.9rem)", color: "#0a1628", letterSpacing: "0.04em",
               textTransform: "uppercase", textAlign: "center",
             }}>
-              Our Business <span style={{ background: "linear-gradient(135deg,#8b5cf6,#ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Automation Model</span>
+              Our Business <span style={{ background: "linear-gradient(135deg,#8b5cf6,#ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Solutions Model</span>
             </h3>
             <span style={{ flex: 1, maxWidth: 120, height: 2, background: "linear-gradient(90deg, #ec4899, transparent)" }} />
           </div>
@@ -914,7 +940,7 @@ function WorkflowFlow() {
           border: "1px solid rgba(236,72,153,0.3)",
           boxShadow: "0 30px 80px rgba(139,92,246,0.2), 0 0 0 1px rgba(255,255,255,0.6) inset",
         }}>
-          <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, color: "#0a1628", fontSize: "clamp(1.3rem, 3.5vw, 1.6rem)", margin: "0 0 0.6rem 0", letterSpacing: "-0.5px" }}>
+          <h3 className="scroll-blue-h" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, color: "#0a1628", fontSize: "clamp(1.3rem, 3.5vw, 1.6rem)", margin: "0 0 0.6rem 0", letterSpacing: "-0.5px" }}>
             This is the system. Want it for{" "}
             <span style={{ background: "linear-gradient(135deg,#ec4899,#8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>your business</span>?
           </h3>

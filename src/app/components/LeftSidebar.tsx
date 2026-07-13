@@ -18,9 +18,9 @@ const tools = [
 ];
 
 const experience = [
-  { title: "Business Automation Analyst", company: "e-marketing.io", period: "2024 – 2025", type: "Full-Time" },
-  { title: "Product Analytics Intern", company: "Nanostack.io", period: "2024 · 3 Months", type: "Internship" },
-  { title: "Data Analyst", company: "Digital Solutions", period: "2024 – 2025", type: "Project" },
+  { title: "Business Automation Analyst", company: "e-marketing.io", period: "2024 – 2025", type: "Full-Time", accent: "#38bdf8" },
+  { title: "Product Analytics Intern", company: "Nanostack.io", period: "2024 · 3 Months", type: "Internship", accent: "#22d3ee" },
+  { title: "Data Analyst", company: "Digital Solutions", period: "2024 – 2025", type: "Project", accent: "#818cf8" },
 ];
 
 export default function LeftSidebar({ open = false, onClose }: { open?: boolean; onClose?: () => void }) {
@@ -217,22 +217,37 @@ export default function LeftSidebar({ open = false, onClose }: { open?: boolean;
       {/* ── Work Experience ── */}
       <div style={{ padding: "1rem 0", borderBottom: "1px solid rgba(148,163,184,0.18)", cursor: "pointer" }} onClick={() => setActiveModal("experience")}>
         <SectionLabel label="Work Experience" action="View All" />
-        {experience.map(e => (
-          <div key={e.company} style={{ marginBottom: "0.75rem" }}>
-            <div style={{ fontSize: "0.73rem", fontWeight: 700, color: "#f1f5f9" }}>{e.title}</div>
-            <div style={{ fontSize: "0.65rem", color: "#38bdf8", fontWeight: 600 }}>{e.company}</div>
-            <div style={{ fontSize: "0.62rem", color: "#94a3b8" }}>{e.period} · {e.type}</div>
-          </div>
-        ))}
+        <div className="lp-timeline">
+          {experience.map(e => (
+            <div key={e.company} className="lp-tl-item" style={{ ["--tl" as string]: e.accent }}>
+              <span className="lp-tl-dot" />
+              <div className="lp-tl-card">
+                <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "#f1f5f9", lineHeight: 1.3 }}>{e.title}</div>
+                <div style={{ fontSize: "0.64rem", color: e.accent, fontWeight: 600, marginTop: 2 }}>{e.company}</div>
+                <div className="lp-tl-period">{e.period} · {e.type}</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* ── Education (NEW) ── */}
       <div style={{ padding: "1rem 0", borderBottom: "1px solid rgba(148,163,184,0.18)", cursor: "pointer" }} onClick={() => setActiveModal("education")}>
         <SectionLabel label="Education" action="Details" />
-        <div style={{ marginBottom: "0.75rem" }}>
-          <div style={{ fontSize: "0.73rem", fontWeight: 700, color: "#f1f5f9" }}>MBA in Data Analytics &amp; Visualization</div>
-          <div style={{ fontSize: "0.65rem", color: "#38bdf8", fontWeight: 600 }}>LNCT University, Bhopal</div>
-          <div style={{ fontSize: "0.62rem", color: "#94a3b8" }}>2023 – 2025 · Graduated</div>
+        <div className="lp-timeline">
+          {[
+            { icon: "🎓", title: "MBA — Data Analytics & Visualization", school: "LNCT University, Bhopal", period: "2023 – 2025 · Graduated", accent: "#34d399" },
+            { icon: "💻", title: "B.Sc. in Computer Applications", school: "Raja Shankar Shah University", period: "2020 – 2023", accent: "#f59e0b" },
+          ].map(ed => (
+            <div key={ed.title} className="lp-tl-item" style={{ ["--tl" as string]: ed.accent }}>
+              <span className="lp-tl-dot" />
+              <div className="lp-tl-card">
+                <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "#f1f5f9", lineHeight: 1.3 }}>{ed.icon} {ed.title}</div>
+                <div style={{ fontSize: "0.64rem", color: ed.accent, fontWeight: 600, marginTop: 2 }}>{ed.school}</div>
+                <div className="lp-tl-period">{ed.period}</div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
