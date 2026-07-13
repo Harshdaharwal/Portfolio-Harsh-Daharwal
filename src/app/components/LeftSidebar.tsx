@@ -34,6 +34,21 @@ export default function LeftSidebar({ open = false, onClose }: { open?: boolean;
     if (saved) setProfileImage(saved);
   }, []);
 
+  // Modal headings light up in blue as they scroll into view
+  useEffect(() => {
+    if (!activeModal) return;
+    if (typeof window === "undefined" || !("IntersectionObserver" in window)) return;
+    const els = Array.from(document.querySelectorAll(".lp-modal .scroll-blue-h"));
+    if (!els.length) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) en.target.classList.add("lit");
+      });
+    }, { threshold: 0.5 });
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [activeModal]);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -267,7 +282,7 @@ export default function LeftSidebar({ open = false, onClose }: { open?: boolean;
 
       {/* ════════════ MODALS ════════════ */}
       {mounted && activeModal && createPortal(
-        <div onClick={() => setActiveModal(null)} style={{
+        <div className="lp-modal" onClick={() => setActiveModal(null)} style={{
           position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
           zIndex: 1000,
           background: "rgba(10,22,40,0.55)",
@@ -306,7 +321,7 @@ export default function LeftSidebar({ open = false, onClose }: { open?: boolean;
                   <div style={{ padding: "clamp(1rem, 3.5vw, 1.5rem)", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
                       <div>
-                        <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>Business Automation Analyst</h3>
+                        <h3 className="scroll-blue-h" style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>Business Automation Analyst</h3>
                         <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.9rem" }}>e-marketing.io</div>
                       </div>
                       <div style={{ background: "#e0f2fe", color: "#0369a1", padding: "0.3rem 0.8rem", borderRadius: 999, fontSize: "0.75rem", fontWeight: 600 }}>2024 - 2025</div>
@@ -322,7 +337,7 @@ export default function LeftSidebar({ open = false, onClose }: { open?: boolean;
                   <div style={{ padding: "clamp(1rem, 3.5vw, 1.5rem)", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
                       <div>
-                        <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>Product Analytics Intern</h3>
+                        <h3 className="scroll-blue-h" style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>Product Analytics Intern</h3>
                         <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.9rem" }}>Nanostack.io · Internship</div>
                       </div>
                       <div style={{ background: "#e0f2fe", color: "#0369a1", padding: "0.3rem 0.8rem", borderRadius: 999, fontSize: "0.75rem", fontWeight: 600 }}>2024 · 3 Months</div>
@@ -338,7 +353,7 @@ export default function LeftSidebar({ open = false, onClose }: { open?: boolean;
                   <div style={{ padding: "clamp(1rem, 3.5vw, 1.5rem)", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
                       <div>
-                        <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>Data Analyst</h3>
+                        <h3 className="scroll-blue-h" style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>Data Analyst</h3>
                         <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.85rem" }}>Digital Solutions</div>
                       </div>
                       <div style={{ background: "#e0f2fe", color: "#0369a1", padding: "0.3rem 0.8rem", borderRadius: 999, fontSize: "0.75rem", fontWeight: 600 }}>2024 – 2025</div>
@@ -358,7 +373,7 @@ export default function LeftSidebar({ open = false, onClose }: { open?: boolean;
                   <div style={{ padding: "clamp(1rem, 3.5vw, 1.5rem)", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
                       <div>
-                        <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>MBA in Data Analytics &amp; Visualization</h3>
+                        <h3 className="scroll-blue-h" style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>MBA in Data Analytics &amp; Visualization</h3>
                         <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.9rem" }}>LNCT University, Bhopal</div>
                       </div>
                       <div style={{ background: "#dcfce7", color: "#166534", padding: "0.3rem 0.8rem", borderRadius: 999, fontSize: "0.75rem", fontWeight: 600 }}>2023 - 2025</div>
@@ -371,7 +386,7 @@ export default function LeftSidebar({ open = false, onClose }: { open?: boolean;
                   <div style={{ padding: "clamp(1rem, 3.5vw, 1.5rem)", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
                       <div>
-                        <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>Data Analytics Certification</h3>
+                        <h3 className="scroll-blue-h" style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>Data Analytics Certification</h3>
                         <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.9rem" }}>Samatrix.io, Bhopal</div>
                       </div>
                       <div style={{ background: "#dcfce7", color: "#166534", padding: "0.3rem 0.8rem", borderRadius: 999, fontSize: "0.75rem", fontWeight: 600 }}>2023 - 2025</div>
@@ -381,7 +396,7 @@ export default function LeftSidebar({ open = false, onClose }: { open?: boolean;
                   <div style={{ padding: "clamp(1rem, 3.5vw, 1.5rem)", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
                       <div>
-                        <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>B.Sc. in Computer Applications</h3>
+                        <h3 className="scroll-blue-h" style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>B.Sc. in Computer Applications</h3>
                         <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.9rem" }}>Raja Shankar Shah University</div>
                       </div>
                       <div style={{ background: "#dcfce7", color: "#166534", padding: "0.3rem 0.8rem", borderRadius: 999, fontSize: "0.75rem", fontWeight: 600 }}>2020 - 2023</div>
@@ -391,7 +406,7 @@ export default function LeftSidebar({ open = false, onClose }: { open?: boolean;
                   <div style={{ padding: "clamp(1rem, 3.5vw, 1.5rem)", borderRadius: 14, border: "1px solid #e2e8f0", background: "white" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
                       <div>
-                        <h3 style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>DCA — Diploma in Computer Applications</h3>
+                        <h3 className="scroll-blue-h" style={{ fontSize: "1.2rem", color: "#0f172a", margin: "0 0 0.25rem 0" }}>DCA — Diploma in Computer Applications</h3>
                         <div style={{ color: "#0ea5e9", fontWeight: 600, fontSize: "0.9rem" }}>Makhanlal Chaturvedi University (MCU), Bhopal</div>
                       </div>
                       <div style={{ background: "#dcfce7", color: "#166534", padding: "0.3rem 0.8rem", borderRadius: 999, fontSize: "0.75rem", fontWeight: 600 }}>2021 - 2022</div>
