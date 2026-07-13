@@ -294,7 +294,7 @@ function SHead({ color, label }: { color: string; label: string }) {
 }
 
 /* ─── CARD ─── */
-function ProjectCard({ p, onClick }: { p: Project; onClick: () => void }) {
+function ProjectCard({ p, onClick, index = 0 }: { p: Project; onClick: () => void; index?: number }) {
   return (
     <div
       className="bp-project-card"
@@ -304,21 +304,12 @@ function ProjectCard({ p, onClick }: { p: Project; onClick: () => void }) {
         borderRadius: 14, overflow: "hidden", cursor: "pointer",
         border: "1px solid rgba(14,165,233,0.12)",
         boxShadow: "0 4px 20px rgba(14,165,233,0.08)",
-        transition: "all 0.28s cubic-bezier(0.34,1.56,0.64,1)",
-      }}
-      onMouseEnter={e => {
-        const el = e.currentTarget as HTMLElement;
-        el.style.transform = "translateY(-5px)";
-        el.style.boxShadow = "0 20px 50px rgba(14,165,233,0.2)";
-      }}
-      onMouseLeave={e => {
-        const el = e.currentTarget as HTMLElement;
-        el.style.transform = "";
-        el.style.boxShadow = "0 4px 20px rgba(14,165,233,0.08)";
+        ["--pc" as string]: p.color,
+        animationDelay: `${(index % 9) * 0.07}s`,
       }}
     >
       {/* Thumbnail */}
-      <div style={{ height: 165, position: "relative", background: p.bgColor, overflow: "hidden" }}>
+      <div className="bp-thumb" style={{ height: 165, position: "relative", background: p.bgColor, overflow: "hidden" }}>
         {p.thumb ? (
           <Image src={p.thumb} alt={p.title} fill sizes="380px" style={{ objectFit: "cover", objectPosition: "top center", opacity: 0.88 }} />
         ) : (
@@ -408,14 +399,15 @@ export default function BehancePortfolio() {
         height: 56,
       }}>
         {tabs.map(tab => (
-          <button key={tab} onClick={() => setActiveTab(tab)} style={{
-            padding: "0.5rem 1.1rem", background: "none", border: "none",
-            cursor: "pointer", fontSize: "0.82rem", fontWeight: activeTab === tab ? 700 : 500,
-            color: activeTab === tab ? "#0ea5e9" : "#64748b",
-            borderBottom: activeTab === tab ? "2.5px solid #0ea5e9" : "2.5px solid transparent",
-            transition: "all 0.2s", whiteSpace: "nowrap", marginBottom: "-1px",
-            fontFamily: "'Space Grotesk',sans-serif",
-          }}>
+          <button key={tab} onClick={() => setActiveTab(tab)}
+            className={`bp-tab${activeTab === tab ? " active" : ""}`}
+            style={{
+              padding: "0.5rem 1.1rem", background: "none", border: "none",
+              cursor: "pointer", fontSize: "0.82rem", fontWeight: activeTab === tab ? 700 : 500,
+              color: activeTab === tab ? "#0ea5e9" : "#64748b",
+              transition: "color 0.2s", whiteSpace: "nowrap", height: "100%",
+              fontFamily: "'Space Grotesk',sans-serif",
+            }}>
             {tab}
           </button>
         ))}
@@ -449,8 +441,8 @@ export default function BehancePortfolio() {
             gridTemplateColumns: "repeat(auto-fill, minmax(285px, 1fr))",
             gap: "1.25rem",
           }}>
-            {filtered.map(p => (
-              <ProjectCard key={p.id} p={p} onClick={() => setSelected(p)} />
+            {filtered.map((p, i) => (
+              <ProjectCard key={p.id} p={p} index={i} onClick={() => setSelected(p)} />
             ))}
           </div>
           <p style={{ textAlign: "center", marginTop: "2rem", fontFamily: "'Fira Code',monospace", fontSize: "0.7rem", color: "#94a3b8" }}>
@@ -461,6 +453,15 @@ export default function BehancePortfolio() {
 
       {/* ── Contact Form Section ── */}
       <ContactSection />
+
+      {/* ── Footer ── */}
+      <footer style={{
+        textAlign: "center", padding: "1.4rem 1rem 1.8rem",
+        fontSize: "0.7rem", color: "#64748b", fontFamily: "'Fira Code',monospace",
+        background: "rgba(224,242,254,0.92)", borderTop: "1px solid rgba(14,165,233,0.15)",
+      }}>
+        © 2026 <b style={{ color: "#0ea5e9" }}>Harsh Daharwal</b> · Data Analytics &amp; Business Automation · Bhopal, India
+      </footer>
 
       {/* ── Project Modal ── */}
       {mounted && selected && <ProjectModal p={selected} onClose={() => setSelected(null)} />}
@@ -522,7 +523,7 @@ function ContactSection() {
         </p>
       </div>
 
-      <div style={{ maxWidth: 760, margin: "0 auto", background: "white", borderRadius: 18, boxShadow: "0 20px 60px rgba(14,165,233,0.15), 0 0 0 1px rgba(14,165,233,0.1)", padding: "clamp(1.25rem, 4vw, 2rem)" }}>
+      <div className="cs-card" style={{ maxWidth: 760, margin: "0 auto", background: "white", borderRadius: 18, boxShadow: "0 20px 60px rgba(14,165,233,0.15), 0 0 0 1px rgba(14,165,233,0.1)", padding: "clamp(1.25rem, 4vw, 2rem)" }}>
         {sent ? (
           <div style={{ textAlign: "center", padding: "2rem 0" }}>
             <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>✅</div>

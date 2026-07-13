@@ -950,6 +950,82 @@ body {
   letter-spacing: 0.02em;
 }
 
+/* ═══════════════════════════════════════════════
+   PAGE POLISH — cards, tabs, accents, contact
+   ═══════════════════════════════════════════════ */
+
+/* Project cards: staggered entrance + per-colour glow hover */
+.bp-project-card {
+  --pc: #0ea5e9;
+  animation: bpCardIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  transition:
+    transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.28s ease,
+    border-color 0.25s ease;
+}
+@keyframes bpCardIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+}
+.bp-project-card:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--pc) 45%, transparent) !important;
+  box-shadow:
+    0 22px 55px color-mix(in srgb, var(--pc) 24%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--pc) 30%, transparent);
+}
+.bp-thumb img { transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+.bp-project-card:hover .bp-thumb img { transform: scale(1.07); }
+
+/* Tab bar: sliding glow underline on the active tab */
+.bp-tab { position: relative; }
+.bp-tab::after {
+  content: '';
+  position: absolute;
+  left: 18%; right: 18%; bottom: 0;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
+}
+.bp-tab:hover { color: #0ea5e9 !important; }
+.bp-tab.active::after {
+  transform: scaleX(1);
+  box-shadow: 0 0 12px rgba(14, 165, 233, 0.65);
+}
+
+/* Soft colour glows behind the project grid */
+#projects { position: relative; z-index: 0; }
+#projects::before,
+#projects::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+}
+#projects::before {
+  top: -40px; right: -120px;
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.18), transparent 70%);
+}
+#projects::after {
+  bottom: -60px; left: -120px;
+  width: 460px; height: 460px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.14), transparent 70%);
+}
+
+/* Contact card: gradient accent strip on top */
+.cs-card { position: relative; overflow: hidden; }
+.cs-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #0ea5e9, #8b5cf6, #ec4899);
+}
+
 /* ══════════════════════════════════════════════
    ██████╗     3D   CSS   ANIMATIONS
    ══════════════════════════════════════════════ */
