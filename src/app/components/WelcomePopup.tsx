@@ -17,7 +17,7 @@ export default function WelcomePopup() {
     <div
       style={{
         position: "fixed", inset: 0, zIndex: 9999,
-        background: "linear-gradient(135deg, #0a1628 0%, #0c1a2e 50%, #0369a1 100%)",
+        background: "linear-gradient(135deg, #1e1b4b 0%, #4c1d95 50%, #7c3aed 100%)",
         display: "flex", alignItems: "center", justifyContent: "center",
         animation: closing ? "welcomeFadeOut 0.6s ease forwards" : "welcomeFadeIn 0.4s ease forwards",
         padding: "1rem", textAlign: "center",
@@ -30,7 +30,7 @@ export default function WelcomePopup() {
           fontFamily: "'Fira Code', monospace",
           fontSize: "clamp(0.75rem, 1.6vw, 0.95rem)",
           letterSpacing: "0.3em",
-          color: "#38bdf8",
+          color: "#c4b5fd",
           marginBottom: "1.25rem",
           textTransform: "uppercase",
         }}>
@@ -43,7 +43,7 @@ export default function WelcomePopup() {
           margin: 0,
           letterSpacing: "-1px",
           lineHeight: 1.1,
-          background: "linear-gradient(135deg, #ffffff 0%, #7dd3fc 100%)",
+          background: "linear-gradient(135deg, #ffffff 0%, #ddd6fe 100%)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           backgroundClip: "text",
@@ -54,7 +54,7 @@ export default function WelcomePopup() {
           fontFamily: "'Space Grotesk', sans-serif",
           fontWeight: 600,
           fontSize: "clamp(0.95rem, 2.2vw, 1.3rem)",
-          color: "#7dd3fc",
+          color: "#c4b5fd",
           marginTop: "0.65rem",
           letterSpacing: "0.04em",
         }}>

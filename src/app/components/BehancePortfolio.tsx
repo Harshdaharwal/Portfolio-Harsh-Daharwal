@@ -300,10 +300,10 @@ function ProjectCard({ p, onClick, index = 0 }: { p: Project; onClick: () => voi
       className="bp-project-card"
       onClick={onClick}
       style={{
-        background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)",
-        borderRadius: 14, overflow: "hidden", cursor: "pointer",
-        border: "1px solid rgba(14,165,233,0.12)",
-        boxShadow: "0 4px 20px rgba(14,165,233,0.08)",
+        background: "rgba(255,255,255,0.97)", backdropFilter: "blur(12px)",
+        borderRadius: 16, overflow: "hidden", cursor: "pointer",
+        border: "1px solid rgba(255,255,255,0.65)",
+        boxShadow: "0 12px 34px rgba(28,10,68,0.32)",
         ["--pc" as string]: p.color,
         animationDelay: `${(index % 9) * 0.07}s`,
       }}
@@ -425,14 +425,14 @@ export default function BehancePortfolio() {
         /* ── Masonry Project Grid ── */
         <div id="projects" style={{ padding: "clamp(1rem, 3vw, 1.75rem) clamp(1rem, 3.5vw, 2rem) 3rem", scrollMarginTop: 70 }}>
           {/* Section heading */}
-          <div style={{ marginBottom: "1.5rem" }}>
-            <div style={{ fontFamily: "'Fira Code',monospace", fontSize: "0.7rem", color: "#0ea5e9", letterSpacing: "0.18em", fontWeight: 700, textTransform: "uppercase", marginBottom: "0.45rem" }}>
+          <div style={{ marginBottom: "1.5rem", textAlign: "center" }}>
+            <div style={{ fontFamily: "'Fira Code',monospace", fontSize: "0.7rem", color: "#c4b5fd", letterSpacing: "0.18em", fontWeight: 700, textTransform: "uppercase", marginBottom: "0.45rem" }}>
               / SELECTED WORK
             </div>
-            <h2 className="scroll-blue-h" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, fontSize: "clamp(1.5rem, 4vw, 2.3rem)", color: "#0a1628", letterSpacing: "-0.6px", margin: 0, lineHeight: 1.1 }}>
+            <h2 className="scroll-blue-h" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, fontSize: "clamp(1.5rem, 4vw, 2.3rem)", color: "#ffffff", letterSpacing: "-0.6px", margin: 0, lineHeight: 1.1, textShadow: "0 4px 24px rgba(0,0,0,0.25)" }}>
               {activeTab === "All Work" ? "All Projects" : `${activeTab} Projects`}
             </h2>
-            <p style={{ color: "#475569", fontSize: "0.9rem", margin: "0.55rem 0 0 0", lineHeight: 1.6, maxWidth: 560 }}>
+            <p style={{ color: "#ddd6fe", fontSize: "0.9rem", margin: "0.55rem auto 0", lineHeight: 1.6, maxWidth: 560 }}>
               Real business solutions I&apos;ve shipped — click any card to open the full case study with the problem, approach and measurable impact.
             </p>
           </div>
@@ -445,7 +445,7 @@ export default function BehancePortfolio() {
               <ProjectCard key={p.id} p={p} index={i} onClick={() => setSelected(p)} />
             ))}
           </div>
-          <p style={{ textAlign: "center", marginTop: "2rem", fontFamily: "'Fira Code',monospace", fontSize: "0.7rem", color: "#94a3b8" }}>
+          <p style={{ textAlign: "center", marginTop: "2rem", fontFamily: "'Fira Code',monospace", fontSize: "0.7rem", color: "#c4b5fd" }}>
             + 24 more client & internship projects delivered
           </p>
         </div>
@@ -457,10 +457,10 @@ export default function BehancePortfolio() {
       {/* ── Footer ── */}
       <footer style={{
         textAlign: "center", padding: "1.4rem 1rem 1.8rem",
-        fontSize: "0.7rem", color: "#64748b", fontFamily: "'Fira Code',monospace",
-        background: "rgba(224,242,254,0.92)", borderTop: "1px solid rgba(14,165,233,0.15)",
+        fontSize: "0.7rem", color: "#c4b5fd", fontFamily: "'Fira Code',monospace",
+        borderTop: "1px solid rgba(255,255,255,0.14)",
       }}>
-        © 2026 <b style={{ color: "#0ea5e9" }}>Harsh Daharwal</b> · Data Analytics &amp; Business Automation · Bhopal, India
+        © 2026 <b style={{ color: "#ffffff" }}>Harsh Daharwal</b> · Data Analytics &amp; Business Automation · Bhopal, India
       </footer>
 
       {/* ── Project Modal ── */}
@@ -508,17 +508,16 @@ function ContactSection() {
   return (
     <section id="contact" style={{
       padding: "clamp(2.5rem, 6vw, 4rem) clamp(1rem, 4vw, 2rem) clamp(3rem, 7vw, 5rem)",
-      background: "linear-gradient(180deg, rgba(255,255,255,0.0) 0%, rgba(240,249,255,0.85) 30%, rgba(224,242,254,0.92) 100%)",
       scrollMarginTop: 70,
     }}>
       <div style={{ maxWidth: 760, margin: "0 auto", textAlign: "center" }}>
-        <div style={{ fontFamily: "'Fira Code',monospace", fontSize: "0.72rem", color: "#0ea5e9", letterSpacing: "0.15em", fontWeight: 700, marginBottom: "0.5rem" }}>
+        <div style={{ fontFamily: "'Fira Code',monospace", fontSize: "0.72rem", color: "#c4b5fd", letterSpacing: "0.15em", fontWeight: 700, marginBottom: "0.5rem" }}>
           / GET IN TOUCH
         </div>
-        <h2 className="scroll-blue-h" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, fontSize: "clamp(1.6rem, 4.5vw, 2.1rem)", color: "#0a1628", margin: "0 0 0.6rem 0" }}>
-          Let&apos;s build something <span style={{ background: "linear-gradient(135deg,#0ea5e9,#0369a1)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>useful</span>.
+        <h2 className="scroll-blue-h" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, fontSize: "clamp(1.6rem, 4.5vw, 2.1rem)", color: "#ffffff", margin: "0 0 0.6rem 0", textShadow: "0 4px 24px rgba(0,0,0,0.25)" }}>
+          Let&apos;s build something <span style={{ background: "linear-gradient(135deg,#7dd3fc,#38bdf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>useful</span>.
         </h2>
-        <p style={{ color: "#475569", fontSize: "0.95rem", margin: "0 0 2rem 0", lineHeight: 1.6 }}>
+        <p style={{ color: "#ddd6fe", fontSize: "0.95rem", margin: "0 0 2rem 0", lineHeight: 1.6 }}>
           Whether you&apos;re hiring, planning a freelance project, or just curious about data &amp; automation — send a message and I&apos;ll reply within 24 hours.
         </p>
       </div>
