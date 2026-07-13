@@ -1,5 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#6d28d9",
+};
 
 export const metadata: Metadata = {
   title: "Harsh Daharwal — Data Analytics & Business Automation Expert",

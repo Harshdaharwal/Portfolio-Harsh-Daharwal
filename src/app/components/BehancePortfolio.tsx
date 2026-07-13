@@ -349,7 +349,7 @@ function ProjectCard({ p, onClick, index = 0 }: { p: Project; onClick: () => voi
 }
 
 /* ─── MAIN COMPONENT ─── */
-export default function BehancePortfolio() {
+export default function BehancePortfolio({ onOpenProfile }: { onOpenProfile?: () => void }) {
   const [activeTab, setActiveTab] = useState("Workflow");
   const [selected, setSelected] = useState<Project | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -466,6 +466,35 @@ export default function BehancePortfolio() {
       {/* ── Project Modal ── */}
       {mounted && selected && <ProjectModal p={selected} onClose={() => setSelected(null)} />}
 
+      {/* ── Mobile app-style bottom navigation ── */}
+      <nav className="app-bottomnav">
+        <button
+          className={activeTab === "Workflow" ? "active" : ""}
+          aria-label="Workflow"
+          onClick={() => { setActiveTab("Workflow"); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+          <span className="bn-ico">⚡</span>
+          <span>Workflow</span>
+        </button>
+        <button
+          className={activeTab !== "Workflow" ? "active" : ""}
+          aria-label="Projects"
+          onClick={() => {
+            setActiveTab("All Work");
+            setTimeout(() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }), 60);
+          }}>
+          <span className="bn-ico">🗂️</span>
+          <span>Projects</span>
+        </button>
+        <button aria-label="Profile" onClick={() => onOpenProfile?.()}>
+          <span className="bn-ico">👤</span>
+          <span>Profile</span>
+        </button>
+        <button aria-label="Contact" onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}>
+          <span className="bn-ico">✉️</span>
+          <span>Contact</span>
+        </button>
+      </nav>
+
       <style dangerouslySetInnerHTML={{ __html: `
         .card-view-overlay { opacity: 0; transition: opacity 0.25s ease; }
         .bp-project-card:hover .card-view-overlay { opacity: 1; }
@@ -478,16 +507,42 @@ export default function BehancePortfolio() {
 function ContactSection() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "Project Inquiry", message: "" });
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const update = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm(prev => ({ ...prev, [k]: e.target.value }));
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const body = `Name: ${form.name}%0D%0APhone: ${form.phone}%0D%0AReply-To: ${form.email}%0D%0A%0D%0A${encodeURIComponent(form.message)}`;
-    const subject = encodeURIComponent(`[${form.subject}] from ${form.name || "Portfolio"}`);
-    window.location.href = `mailto:harshdaharwal20@gmail.com?subject=${subject}&body=${body}`;
-    setSent(true);
+    if (sending) return;
+    setSending(true);
+    try {
+      // Delivers straight to the inbox via FormSubmit (no server config needed)
+      const res = await fetch("https://formsubmit.co/ajax/harshdaharwal20@gmail.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone || "—",
+          subject: form.subject,
+          message: form.message,
+          _subject: `[Portfolio] ${form.subject} — ${form.name}`,
+          _template: "table",
+          _captcha: "false",
+        }),
+      });
+      if (!res.ok) throw new Error("send failed");
+      setSent(true);
+    } catch {
+      // Fallback: open the visitor's mail client pre-filled
+      const body = `Name: ${form.name}%0D%0APhone: ${form.phone}%0D%0AReply-To: ${form.email}%0D%0A%0D%0A${encodeURIComponent(form.message)}`;
+      const subject = encodeURIComponent(`[${form.subject}] from ${form.name || "Portfolio"}`);
+      window.location.href = `mailto:harshdaharwal20@gmail.com?subject=${subject}&body=${body}`;
+      setSent(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   const inputStyle: React.CSSProperties = {
@@ -526,8 +581,8 @@ function ContactSection() {
         {sent ? (
           <div style={{ textAlign: "center", padding: "2rem 0" }}>
             <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>✅</div>
-            <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", color: "#0a1628", margin: "0 0 0.5rem 0" }}>Opening your email app…</h3>
-            <p style={{ color: "#64748b", fontSize: "0.9rem", margin: 0 }}>If it didn&apos;t, email me directly at <a href="mailto:harshdaharwal20@gmail.com" style={{ color: "#0ea5e9", fontWeight: 600 }}>harshdaharwal20@gmail.com</a>.</p>
+            <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", color: "#0a1628", margin: "0 0 0.5rem 0" }}>Message sent successfully!</h3>
+            <p style={{ color: "#64748b", fontSize: "0.9rem", margin: 0 }}>Thanks for reaching out — I&apos;ll reply within 24 hours. Urgent? Email <a href="mailto:harshdaharwal20@gmail.com" style={{ color: "#0ea5e9", fontWeight: 600 }}>harshdaharwal20@gmail.com</a>.</p>
             <button onClick={() => { setSent(false); setForm({ name: "", email: "", phone: "", subject: "Project Inquiry", message: "" }); }}
               style={{ marginTop: "1.25rem", padding: "0.5rem 1.1rem", borderRadius: 8, background: "#f1f5f9", border: "1px solid #cbd5e1", cursor: "pointer", fontWeight: 600, color: "#334155" }}>
               Send another
@@ -569,16 +624,16 @@ function ContactSection() {
                 style={{ ...inputStyle, resize: "vertical", minHeight: 110, fontFamily: "inherit" }}
                 placeholder="Tell me about your project, timeline, and what success looks like…" />
             </div>
-            <button type="submit" style={{
+            <button type="submit" disabled={sending} style={{
               padding: "0.85rem 1.5rem", borderRadius: 10,
-              background: "linear-gradient(135deg,#0ea5e9,#0369a1)",
+              background: sending ? "#94a3b8" : "linear-gradient(135deg,#0ea5e9,#0369a1)",
               border: "none", color: "white", fontWeight: 700, fontSize: "0.95rem",
-              cursor: "pointer", boxShadow: "0 10px 24px rgba(14,165,233,0.35)",
+              cursor: sending ? "wait" : "pointer", boxShadow: "0 10px 24px rgba(14,165,233,0.35)",
               transition: "transform 0.15s, box-shadow 0.15s",
             }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 14px 30px rgba(14,165,233,0.45)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 10px 24px rgba(14,165,233,0.35)"; }}>
-              Send Message →
+              {sending ? "Sending…" : "Send Message →"}
             </button>
             <div style={{ display: "flex", justifyContent: "center", gap: "1.5rem", fontSize: "0.78rem", color: "#64748b", marginTop: "0.5rem", flexWrap: "wrap" }}>
               <a href="mailto:harshdaharwal20@gmail.com" style={{ color: "#0ea5e9", textDecoration: "none", fontWeight: 600 }}>📧 harshdaharwal20@gmail.com</a>
@@ -679,7 +734,6 @@ function WorkflowFlow() {
     <section style={{
       position: "relative",
       padding: "clamp(2.5rem, 6vw, 4rem) clamp(1rem, 4vw, 2rem) clamp(3rem, 7vw, 5rem)",
-      background: "linear-gradient(135deg, #fef3c7 0%, #fce7f3 20%, #ddd6fe 45%, #bfdbfe 70%, #a7f3d0 100%)",
       overflow: "hidden",
     }}>
       {/* Static soft glow accents (no expensive blur animation) */}
@@ -703,20 +757,21 @@ function WorkflowFlow() {
           fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800,
           fontSize: "clamp(2rem, 5vw, 3.6rem)", margin: "0 0 0.5rem 0",
           letterSpacing: "-1.5px", lineHeight: 1.08,
-          color: "#0a1628",
+          color: "#ffffff",
+          textShadow: "0 4px 28px rgba(0,0,0,0.3)",
         }}>
           I turn{" "}
           <span className="wf-rotate" key={wordIdx} style={{
             display: "inline-block",
-            background: "linear-gradient(135deg,#ec4899 0%,#8b5cf6 50%,#0ea5e9 100%)",
+            background: "linear-gradient(135deg,#f9a8d4 0%,#fbbf24 50%,#7dd3fc 100%)",
             WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
           }}>{heroWords[wordIdx]}</span>
           <br />into <span style={{
-            background: "linear-gradient(135deg,#0ea5e9 0%,#10b981 100%)",
+            background: "linear-gradient(135deg,#7dd3fc 0%,#6ee7b7 100%)",
             WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
           }}>automated business solutions.</span>
         </h2>
-        <p style={{ color: "#475569", fontSize: "1rem", lineHeight: 1.7, maxWidth: 660, margin: "1rem auto 0" }}>
+        <p style={{ color: "#ddd6fe", fontSize: "1rem", lineHeight: 1.7, maxWidth: 660, margin: "1rem auto 0" }}>
           A proven 10-stage delivery workflow, refined across 30+ shipped business solutions — from the first discovery call to the day your team forgets a manual process ever existed.
         </p>
 
@@ -730,7 +785,7 @@ function WorkflowFlow() {
           ].map(s => (
             <div key={s.l} className="wf-stat-card" style={{
               padding: "0.85rem 1.3rem", borderRadius: 14,
-              background: "rgba(255,255,255,0.78)", backdropFilter: "none",
+              background: "rgba(255,255,255,0.96)", backdropFilter: "none",
               border: `1px solid ${s.c}44`,
               boxShadow: `0 8px 24px ${s.c}22, 0 0 0 1px rgba(255,255,255,0.6) inset`,
               minWidth: 140,
@@ -818,9 +873,10 @@ function WorkflowFlow() {
           <h3 className="scroll-blue-h" style={{
             margin: "0.9rem 0 0 0",
             fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800,
-            fontSize: "clamp(1.5rem,3vw,2.1rem)", color: "#0a1628", letterSpacing: "-0.5px",
+            fontSize: "clamp(1.5rem,3vw,2.1rem)", color: "#ffffff", letterSpacing: "-0.5px",
+            textShadow: "0 4px 24px rgba(0,0,0,0.25)",
           }}>
-            Six wins your team feels in <span style={{ background: "linear-gradient(135deg,#ec4899,#8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>week one</span>.
+            Six wins your team feels in <span style={{ background: "linear-gradient(135deg,#f9a8d4,#fbbf24)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>week one</span>.
           </h3>
         </div>
         <div style={{
@@ -840,7 +896,7 @@ function WorkflowFlow() {
               style={{
                 padding: "1.25rem 1rem",
                 borderRadius: 16,
-                background: "rgba(255,255,255,0.88)",
+                background: "rgba(255,255,255,0.96)",
                 backdropFilter: "none",
                 border: `1px solid ${b.c}33`,
                 boxShadow: `0 10px 28px ${b.c}20, 0 0 0 1px rgba(255,255,255,0.6) inset`,
@@ -871,16 +927,17 @@ function WorkflowFlow() {
       <div style={{ maxWidth: 1180, margin: "0 auto 3rem", position: "relative", zIndex: 2 }}>
         <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
-            <span style={{ flex: 1, maxWidth: 120, height: 2, background: "linear-gradient(90deg, transparent, #8b5cf6)" }} />
+            <span style={{ flex: 1, maxWidth: 120, height: 2, background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.85))" }} />
             <h3 className="scroll-blue-h" style={{
               margin: 0,
               fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800,
-              fontSize: "clamp(1.15rem,2.6vw,1.9rem)", color: "#0a1628", letterSpacing: "0.04em",
+              fontSize: "clamp(1.15rem,2.6vw,1.9rem)", color: "#ffffff", letterSpacing: "0.04em",
               textTransform: "uppercase", textAlign: "center",
+              textShadow: "0 4px 24px rgba(0,0,0,0.25)",
             }}>
-              Our Business <span style={{ background: "linear-gradient(135deg,#8b5cf6,#ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Solutions Model</span>
+              Our Business <span style={{ background: "linear-gradient(135deg,#c4b5fd,#f9a8d4)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Solutions Model</span>
             </h3>
-            <span style={{ flex: 1, maxWidth: 120, height: 2, background: "linear-gradient(90deg, #ec4899, transparent)" }} />
+            <span style={{ flex: 1, maxWidth: 120, height: 2, background: "linear-gradient(90deg, rgba(255,255,255,0.85), transparent)" }} />
           </div>
         </div>
 

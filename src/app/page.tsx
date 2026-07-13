@@ -15,11 +15,6 @@ export default function Home() {
       <WelcomePopup />
       <ThreeBackground />
 
-      {/* ── Mobile hamburger (hidden on desktop) ── */}
-      <button className="lp-hamburger" aria-label="Open profile menu" onClick={() => setSidebarOpen(true)}>
-        ☰
-      </button>
-
       {/* ── Mobile backdrop behind the drawer ── */}
       <div className={`lp-backdrop${sidebarOpen ? " show" : ""}`} onClick={() => setSidebarOpen(false)} />
 
@@ -28,7 +23,7 @@ export default function Home() {
 
       {/* ── Main scrollable content ── */}
       <main className="lp-main">
-        <BehancePortfolio />
+        <BehancePortfolio onOpenProfile={() => setSidebarOpen(true)} />
       </main>
     </div>
   );
